@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<>
 <head>
     <title>Website Saya</title>
   
@@ -21,22 +21,62 @@
     font-size: 18px;
   }
 
-  button {
-    background-color: #2457c5;
-    color: white;
-    padding: 12px 24px;
-    border: none;
-    border-radius: 10px;
-    font-size: 16px;
-  }
+  
+button {
+  background-color: #2457c5;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 4px 8px rgba(36, 87, 197, 0.25);
+}
+
+button:hover {
+  background-color: #1743a5;
+  transform: translateY(-3px);
+  box-shadow: 0 7px 14px rgba(36, 87, 197, 0.35);
+}
+
+button:active {
+  transform: scale(0.96);
+}
+
+  
+.container {
+  background-color: white;
+  max-width: 350px;
+  margin: 30px auto;
+  padding: 25px;
+  border-radius: 18px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
 </style>
 
 </head>
 
+
 <body>
+  <div class="container">
     <h1>Halo, saya Isna!</h1>
     <p>Saya sedang belajar membuat website.</p>
 
-    <button>Klik Saya</button>
+    
+<button onclick="sapaPengunjung()">Klik Saya</button>
+
+<p id="pesan"></p>
+
+  </div>
+  
+<script>
+function sapaPengunjung() {
+  document.getElementById("pesan").textContent =
+    "Yay! Selamat datang di website saya! 🎉";
+}
+</script>
+
 </body>
-</html>
+  
