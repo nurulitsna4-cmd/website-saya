@@ -449,8 +449,193 @@
         padding: 15px;
       }
     }
+    
+.calculator {
+  max-width: 560px;
+  margin: 25px auto;
+  padding: 22px 16px;
+  border: 1px solid #49328b;
+  border-radius: 16px;
+  background: linear-gradient(145deg, #171832, #0c1022);
+  color: #f5f3ff;
+}
+
+.calculator h3 {
+  text-align: center;
+  font-size: 23px;
+}
+
+.calc-desc {
+  text-align: center;
+  color: #aaa8c9;
+  font-size: 13px;
+  margin: 6px 0 22px;
+}
+
+.calculator label {
+  display: block;
+  margin: 13px 0 6px;
+  font-size: 13px;
+  color: #d8b4fe;
+}
+
+.calculator select,
+.calculator input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #493c76;
+  border-radius: 8px;
+  background: #100f28;
+  color: white;
+  font-size: 15px;
+}
+
+.calc-button,
+.calc-wa {
+  display: block;
+  width: 100%;
+  margin-top: 18px;
+  padding: 13px;
+  border: none;
+  border-radius: 9px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: bold;
+  text-decoration: none;
+  color: white;
+  cursor: pointer;
+}
+
+.calc-button {
+  background: linear-gradient(100deg, #7c3aed, #2563eb);
+}
+
+.calc-result {
+  margin-top: 18px;
+  padding: 15px;
+  border-radius: 10px;
+  background: #100f28;
+  border: 1px solid #37305d;
+  line-height: 1.9;
+  overflow-wrap: anywhere;
+}
+
+.calc-total {
+  color: #67e8f9;
+  font-size: 23px;
+  font-weight: bold;
+}
+
+.calc-wa {
+  background: #059669;
+}
+
+.calc-warning {
+  margin-top: 15px;
+  color: #aaa8c9;
+  font-size: 11px;
+  line-height: 1.6;
+}
+    
   </style>
 </head>
+
+<script>
+const daftarRank = [
+  "Grandmaster",
+  "Epic",
+  "Legend",
+  "Mythic",
+  "Mythical Honor"
+];
+
+const hargaRank = [1000, 2000, 3000, 4000, 5000];
+
+function hitungHarga() {
+  const awal = Number(document.getElementById("rankAwal").value);
+  const bintangAwal = Number(document.getElementById("bintangAwal").value);
+  const tujuan = Number(document.getElementById("rankTujuan").value);
+  const bintangTujuan = Number(document.getElementById("bintangTujuan").value);
+
+  const hasil = document.getElementById("hasilHarga");
+  const tombolWA = document.getElementById("pesanWA");
+
+  tombolWA.style.display = "none";
+
+  if (tujuan < awal) {
+    hasil.textContent = "Rank tujuan harus sama atau lebih tinggi dari rank saat ini.";
+    return;
+  }
+
+  if (
+    !Number.isInteger(bintangAwal) ||
+    !Number.isInteger(bintangTujuan) ||
+    bintangAwal < 0 ||
+    bintangAwal > 49 ||
+    bintangTujuan < 1 ||
+    bintangTujuan > 50
+  ) {
+    hasil.textContent = "Masukkan jumlah bintang yang valid.";
+    return;
+  }
+
+  if (tujuan === awal && bintangTujuan <= bintangAwal) {
+    hasil.textContent = "Bintang tujuan harus lebih banyak dari bintang saat ini.";
+    return;
+  }
+
+  // Estimasi: setiap perpindahan rank diasumsikan 5 bintang.
+  const totalBintang =
+    (tujuan - awal) * 5 + bintangTujuan - bintangAwal;
+
+  if (totalBintang <= 0) {
+    hasil.textContent = "Periksa kembali rank dan jumlah bintang.";
+    return;
+  }
+
+  // Menghitung biaya dengan tarif rank asal hingga rank tujuan.
+  let sisa = totalBintang;
+  let indeks = awal;
+  let biaya = 0;
+
+  while (sisa > 0 && indeks <= tujuan) {
+    const bintangDiRank = indeks === awal
+      ? Math.max(1, 5 - bintangAwal)
+      : 5;
+
+    const jumlah = Math.min(sisa, bintangDiRank);
+    biaya += jumlah * hargaRank[indeks];
+    sisa -= jumlah;
+
+    if (sisa > 0) indeks++;
+  }
+
+  hasil.innerHTML =
+    "Rank awal: <strong>" + daftarRank[awal] + "</strong><br>" +
+    "Rank tujuan: <strong>" + daftarRank[tujuan] + "</strong><br>" +
+    "Estimasi: <strong>" + totalBintang + " bintang</strong><br>" +
+    "Total estimasi:<br><span class='calc-total'>" +
+    biaya.toLocaleString("id-ID", {
+      style: "currency",
+      currency: "IDR",
+      maximumFractionDigits: 0
+    }) + "</span>";
+
+  const nomorWA = "6285842535611";
+  const pesan =
+    "Halo XERZ RANK, saya ingin konsultasi pesanan joki MLBB.%0A" +
+    "Rank awal: " + daftarRank[awal] + "%0A" +
+    "Bintang awal: " + bintangAwal + "%0A" +
+    "Rank tujuan: " + daftarRank[tujuan] + "%0A" +
+    "Bintang tujuan: " + bintangTujuan + "%0A" +
+    "Estimasi bintang: " + totalBintang + "%0A" +
+    "Estimasi biaya: " + biaya.toLocaleString("id-ID") +
+    "%0AMohon konfirmasi harga dan estimasi bintang sebenarnya.";
+
+  tombolWA.href = "https://wa.me/" + nomorWA + "?text=" + pesan;
+  tombolWA.style.display = "block";
+}
+</script>
 
 <body>
 
@@ -574,6 +759,53 @@
           Total biaya mengikuti jumlah bintang yang dipesan.
           Detail pesanan dikonfirmasi sebelum pengerjaan.
         </div>
+        
+<div class="calculator">
+  <h3>🧮 Kalkulator Harga</h3>
+  <p class="calc-desc">Hitung estimasi biaya push rank kamu.</p>
+
+  <label for="rankAwal">Rank saat ini</label>
+  <select id="rankAwal">
+    <option value="0">Grandmaster</option>
+    <option value="1">Epic</option>
+    <option value="2">Legend</option>
+    <option value="3">Mythic</option>
+    <option value="4">Mythical Honor</option>
+  </select>
+
+  <label for="bintangAwal">Bintang saat ini</label>
+  <input id="bintangAwal" type="number" min="0" max="49" value="0">
+
+  <label for="rankTujuan">Rank tujuan</label>
+  <select id="rankTujuan">
+    <option value="0">Grandmaster</option>
+    <option value="1">Epic</option>
+    <option value="2" selected>Legend</option>
+    <option value="3">Mythic</option>
+    <option value="4">Mythical Honor</option>
+  </select>
+
+  <label for="bintangTujuan">Bintang tujuan</label>
+  <input id="bintangTujuan" type="number" min="1" max="50" value="10">
+
+  <button type="button" class="calc-button" onclick="hitungHarga()">
+    HITUNG ESTIMASI
+  </button>
+
+  <div id="hasilHarga" class="calc-result" aria-live="polite">
+    Pilih rank dan bintang, lalu tekan tombol hitung.
+  </div>
+
+  <a id="pesanWA" class="calc-wa" href="#" target="_blank"
+     rel="noopener noreferrer" style="display:none">
+    PESAN VIA WHATSAPP
+  </a>
+
+  <p class="calc-warning">
+    Estimasi menggunakan asumsi 5 bintang untuk setiap perpindahan
+    rank. Konfirmasi jumlah bintang dan harga akhir sebelum memesan.
+  </p>
+</div>
 
         <a href="#kontak" class="order-button">
           💬 KONSULTASI PESANAN
