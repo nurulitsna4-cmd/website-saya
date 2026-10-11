@@ -541,79 +541,91 @@
 </head>
 
 <script>
-const daftarRank = [
-  "Grandmaster",
-  "Epic",
-  "Legend",
-  "Mythic",
-  "Mythical Honor"
-];
+const dataRank = {
+  gm5: { nama: "Grandmaster V", dasar: 0, grup: 0 },
+  gm4: { nama: "Grandmaster IV", dasar: 5, grup: 0 },
+  gm3: { nama: "Grandmaster III", dasar: 10, grup: 0 },
+  gm2: { nama: "Grandmaster II", dasar: 15, grup: 0 },
+  gm1: { nama: "Grandmaster I", dasar: 20, grup: 0 },
 
-const hargaRank = [1000, 2000, 3000, 4000, 5000];
+  ep5: { nama: "Epic V", dasar: 25, grup: 1 },
+  ep4: { nama: "Epic IV", dasar: 30, grup: 1 },
+  ep3: { nama: "Epic III", dasar: 35, grup: 1 },
+  ep2: { nama: "Epic II", dasar: 40, grup: 1 },
+  ep1: { nama: "Epic I", dasar: 45, grup: 1 },
 
-function hitungHarga() {
-  const awal = Number(document.getElementById("rankAwal").value);
-  const bintangAwal = Number(document.getElementById("bintangAwal").value);
-  const tujuan = Number(document.getElementById("rankTujuan").value);
-  const bintangTujuan = Number(document.getElementById("bintangTujuan").value);
+  le5: { nama: "Legend V", dasar: 50, grup: 2 },
+  le4: { nama: "Legend IV", dasar: 55, grup: 2 },
+  le3: { nama: "Legend III", dasar: 60, grup: 2 },
+  le2: { nama: "Legend II", dasar: 65, grup: 2 },
+  le1: { nama: "Legend I", dasar: 70, grup: 2 },
 
+  mythic: { nama: "Mythic", dasar: 75, grup: 3 },
+  honor: { nama: "Mythical Honor", dasar: 100, grup: 4 }
+};
+
+const tarifRank = [1000, 2000, 3000, 4000, 5000];
+
+function hitungHargaBaru() {
+  const awalKey = document.getElementById("posisiAwal").value;
+  const tujuanKey = document.getElementById("posisiTujuan").value;
+  const bAwal = Number(document.getElementById("bintangAwal").value);
+  const bTujuan = Number(document.getElementById("bintangTujuan").value);
   const hasil = document.getElementById("hasilHarga");
   const tombolWA = document.getElementById("pesanWA");
 
   tombolWA.style.display = "none";
 
-  if (tujuan < awal) {
-    hasil.textContent = "Rank tujuan harus sama atau lebih tinggi dari rank saat ini.";
+  const awal = dataRank[awalKey];
+  const tujuan = dataRank[tujuanKey];
+
+  const validAwal = awal.grup <= 2
+    ? bAwal >= 0 && bAwal <= 5
+    : awal.grup === 3
+      ? bAwal >= 0 && bAwal <= 24
+      : bAwal >= 25 && bAwal <= 50;
+
+  const validTujuan = tujuan.grup <= 2
+    ? bTujuan >= 0 && bTujuan <= 5
+    : tujuan.grup === 3
+      ? bTujuan >= 0 && bTujuan <= 24
+      : bTujuan >= 25 && bTujuan <= 50;
+
+  if (!Number.isInteger(bAwal) || !Number.isInteger(bTujuan) ||
+      !validAwal || !validTujuan) {
+    hasil.textContent = "Jumlah bintang tidak sesuai dengan rank yang dipilih.";
     return;
   }
 
-  if (
-    !Number.isInteger(bintangAwal) ||
-    !Number.isInteger(bintangTujuan) ||
-    bintangAwal < 0 ||
-    bintangAwal > 49 ||
-    bintangTujuan < 1 ||
-    bintangTujuan > 50
-  ) {
-    hasil.textContent = "Masukkan jumlah bintang yang valid.";
+  const totalAwal = awal.dasar + bAwal;
+  const totalTujuan = tujuan.dasar +
+    (tujuan.grup === 4 ? bTujuan - 25 : bTujuan);
+
+  if (totalTujuan <= totalAwal) {
+    hasil.textContent = "Rank dan bintang tujuan harus lebih tinggi dari posisi saat ini.";
     return;
   }
 
-  if (tujuan === awal && bintangTujuan <= bintangAwal) {
-    hasil.textContent = "Bintang tujuan harus lebih banyak dari bintang saat ini.";
-    return;
-  }
-
-  // Estimasi: setiap perpindahan rank diasumsikan 5 bintang.
-  const totalBintang =
-    (tujuan - awal) * 5 + bintangTujuan - bintangAwal;
-
-  if (totalBintang <= 0) {
-    hasil.textContent = "Periksa kembali rank dan jumlah bintang.";
-    return;
-  }
-
-  // Menghitung biaya dengan tarif rank asal hingga rank tujuan.
-  let sisa = totalBintang;
-  let indeks = awal;
   let biaya = 0;
+  let hitungBintang = 0;
 
-  while (sisa > 0 && indeks <= tujuan) {
-    const bintangDiRank = indeks === awal
-      ? Math.max(1, 5 - bintangAwal)
-      : 5;
+  for (let p = totalAwal; p < totalTujuan; p++) {
+    let grup;
 
-    const jumlah = Math.min(sisa, bintangDiRank);
-    biaya += jumlah * hargaRank[indeks];
-    sisa -= jumlah;
+    if (p < 25) grup = 0;
+    else if (p < 50) grup = 1;
+    else if (p < 75) grup = 2;
+    else if (p < 100) grup = 3;
+    else grup = 4;
 
-    if (sisa > 0) indeks++;
+    biaya += tarifRank[grup];
+    hitungBintang++;
   }
 
   hasil.innerHTML =
-    "Rank awal: <strong>" + daftarRank[awal] + "</strong><br>" +
-    "Rank tujuan: <strong>" + daftarRank[tujuan] + "</strong><br>" +
-    "Estimasi: <strong>" + totalBintang + " bintang</strong><br>" +
+    "Rank awal: <strong>" + awal.nama + " (" + bAwal + " bintang)</strong><br>" +
+    "Rank tujuan: <strong>" + tujuan.nama + " (" + bTujuan + " bintang)</strong><br>" +
+    "Estimasi kenaikan: <strong>" + hitungBintang + " bintang</strong><br>" +
     "Total estimasi:<br><span class='calc-total'>" +
     biaya.toLocaleString("id-ID", {
       style: "currency",
@@ -622,20 +634,18 @@ function hitungHarga() {
     }) + "</span>";
 
   const nomorWA = "6285842535611";
-  const pesan =
-    "Halo XERZ RANK, saya ingin konsultasi pesanan joki MLBB.%0A" +
-    "Rank awal: " + daftarRank[awal] + "%0A" +
-    "Bintang awal: " + bintangAwal + "%0A" +
-    "Rank tujuan: " + daftarRank[tujuan] + "%0A" +
-    "Bintang tujuan: " + bintangTujuan + "%0A" +
-    "Estimasi bintang: " + totalBintang + "%0A" +
-    "Estimasi biaya: " + biaya.toLocaleString("id-ID") +
-    "%0AMohon konfirmasi harga dan estimasi bintang sebenarnya.";
+  const pesan = "Halo XERZ RANK, saya ingin konsultasi joki MLBB.\n" +
+    "Rank awal: " + awal.nama + " (" + bAwal + " bintang)\n" +
+    "Rank tujuan: " + tujuan.nama + " (" + bTujuan + " bintang)\n" +
+    "Estimasi kenaikan: " + hitungBintang + " bintang\n" +
+    "Estimasi biaya: Rp" + biaya.toLocaleString("id-ID") +
+    "\nMohon konfirmasi harga akhir.";
 
-  tombolWA.href = "https://wa.me/" + nomorWA + "?text=" + pesan;
+  tombolWA.href = "https://wa.me/" + nomorWA +
+    "?text=" + encodeURIComponent(pesan);
   tombolWA.style.display = "block";
 }
-</script>
+</scrip>
 
 <body>
 
@@ -687,7 +697,7 @@ function hitungHarga() {
         Layanan joki rank Mobile Legends.
         Harga dihitung per bintang sesuai rank.
       </p>
-
+            
       <div class="service-card">
         <div class="service-icon">⚔️</div>
 
@@ -760,53 +770,91 @@ function hitungHarga() {
           Detail pesanan dikonfirmasi sebelum pengerjaan.
         </div>
         
+
 <div class="calculator">
   <h3>🧮 Kalkulator Harga</h3>
-  <p class="calc-desc">Hitung estimasi biaya push rank kamu.</p>
+  <p class="calc-desc">Hitung estimasi biaya joki rank MLBB.</p>
 
-  <label for="rankAwal">Rank saat ini</label>
-  <select id="rankAwal">
-    <option value="0">Grandmaster</option>
-    <option value="1">Epic</option>
-    <option value="2">Legend</option>
-    <option value="3">Mythic</option>
-    <option value="4">Mythical Honor</option>
+  <label for="posisiAwal">Rank saat ini</label>
+  <select id="posisiAwal">
+    <optgroup label="Grandmaster">
+      <option value="gm5">Grandmaster V</option>
+      <option value="gm4">Grandmaster IV</option>
+      <option value="gm3">Grandmaster III</option>
+      <option value="gm2">Grandmaster II</option>
+      <option value="gm1">Grandmaster I</option>
+    </optgroup>
+    <optgroup label="Epic">
+      <option value="ep5">Epic V</option>
+      <option value="ep4">Epic IV</option>
+      <option value="ep3">Epic III</option>
+      <option value="ep2">Epic II</option>
+      <option value="ep1">Epic I</option>
+    </optgroup>
+    <optgroup label="Legend">
+      <option value="le5">Legend V</option>
+      <option value="le4">Legend IV</option>
+      <option value="le3">Legend III</option>
+      <option value="le2">Legend II</option>
+      <option value="le1">Legend I</option>
+    </optgroup>
+    <option value="mythic">Mythic</option>
+    <option value="honor">Mythical Honor</option>
   </select>
 
   <label for="bintangAwal">Bintang saat ini</label>
-  <input id="bintangAwal" type="number" min="0" max="49" value="0">
+  <input id="bintangAwal" type="number" min="0" max="50" value="0">
 
-  <label for="rankTujuan">Rank tujuan</label>
-  <select id="rankTujuan">
-    <option value="0">Grandmaster</option>
-    <option value="1">Epic</option>
-    <option value="2" selected>Legend</option>
-    <option value="3">Mythic</option>
-    <option value="4">Mythical Honor</option>
+  <label for="posisiTujuan">Rank tujuan</label>
+  <select id="posisiTujuan">
+    <optgroup label="Grandmaster">
+      <option value="gm5">Grandmaster V</option>
+      <option value="gm4">Grandmaster IV</option>
+      <option value="gm3">Grandmaster III</option>
+      <option value="gm2">Grandmaster II</option>
+      <option value="gm1">Grandmaster I</option>
+    </optgroup>
+    <optgroup label="Epic">
+      <option value="ep5">Epic V</option>
+      <option value="ep4">Epic IV</option>
+      <option value="ep3">Epic III</option>
+      <option value="ep2">Epic II</option>
+      <option value="ep1">Epic I</option>
+    </optgroup>
+    <optgroup label="Legend">
+      <option value="le5">Legend V</option>
+      <option value="le4">Legend IV</option>
+      <option value="le3">Legend III</option>
+      <option value="le2">Legend II</option>
+      <option value="le1">Legend I</option>
+    </optgroup>
+    <option value="mythic" selected>Mythic</option>
+    <option value="honor">Mythical Honor</option>
   </select>
 
   <label for="bintangTujuan">Bintang tujuan</label>
-  <input id="bintangTujuan" type="number" min="1" max="50" value="10">
+  <input id="bintangTujuan" type="number" min="0" max="50" value="0">
 
-  <button type="button" class="calc-button" onclick="hitungHarga()">
+  <button type="button" class="calc-button" onclick="hitungHargaBaru()">
     HITUNG ESTIMASI
   </button>
 
   <div id="hasilHarga" class="calc-result" aria-live="polite">
-    Pilih rank dan bintang, lalu tekan tombol hitung.
+    Pilih rank dan bintang untuk menghitung biaya.
   </div>
 
-  <a id="pesanWA" class="calc-wa" href="#" target="_blank"
-     rel="noopener noreferrer" style="display:none">
+  <a id="pesanWA" class="calc-wa" href="#"
+     target="_blank" rel="noopener noreferrer" style="display:none">
     PESAN VIA WHATSAPP
   </a>
 
   <p class="calc-warning">
-    Estimasi menggunakan asumsi 5 bintang untuk setiap perpindahan
-    rank. Konfirmasi jumlah bintang dan harga akhir sebelum memesan.
+    Harga merupakan estimasi. Konfirmasi jumlah bintang dan biaya
+    akhir sebelum pesanan diproses.
   </p>
 </div>
 
+      
         <a href="#kontak" class="order-button">
           💬 KONSULTASI PESANAN
         </a>
