@@ -54,6 +54,23 @@ button:active {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
+.tombol-wa {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 12px 18px;
+  background-color: #25D366;
+  color: white;
+  text-decoration: none;
+  border-radius: 10px;
+  font-family: Arial, sans-serif;
+  transition: 0.3s;
+}
+
+.tombol-wa:hover {
+  background-color: #1da851;
+  transform: translateY(-3px);
+}
+
 </style>
 
 </head>
@@ -65,9 +82,14 @@ button:active {
     <p>Saya sedang belajar membuat website.</p>
 
     
-<button onclick="sapaPengunjung()">Klik Saya</button>
 
+<button onclick="sapaPengunjung()">Klik Saya</button>
 <p id="pesan"></p>
+
+<a href="https://wa.me/6285842535611" target="_blank" class="tombol-wa">
+  Hubungi Saya via WhatsApp
+</a>
+
 
   </div>
   
