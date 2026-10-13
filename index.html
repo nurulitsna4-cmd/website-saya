@@ -656,8 +656,127 @@
     transition-duration: 0.01ms !important;
   }
 }
-
     
+/* ===== EXTRA GAMING EFFECTS ===== */
+
+/* Cahaya neon pada kartu harga */
+.package {
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.package:hover {
+  transform: translateY(-4px) scale(1.01);
+  border-color: #38bdf8;
+  box-shadow:
+    0 0 12px #38bdf844,
+    0 0 25px #a855f722;
+}
+
+/* Garis cahaya pada kartu */
+.package::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 70%;
+  height: 100%;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #ffffff12,
+    transparent
+  );
+  transform: skewX(-20deg);
+}
+
+.package:hover::before {
+  left: 150%;
+  transition: left 0.7s ease;
+}
+
+/* Ikon layanan mengambang */
+.service-icon {
+  animation: iconFloat 3s ease-in-out infinite;
+}
+
+@keyframes iconFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+/* Cahaya pada tombol hitung */
+.calc-button {
+  box-shadow: 0 0 14px #7c3aed33;
+}
+
+.calc-button:active,
+.order-button:active,
+.button:active {
+  transform: scale(0.97);
+}
+
+/* Animasi cahaya tombol WhatsApp */
+.calc-wa {
+  box-shadow: 0 0 12px #10b98122;
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.calc-wa:hover {
+  box-shadow: 0 0 22px #10b98166;
+  transform: translateY(-2px);
+}
+
+/* Kartu keunggulan lebih hidup */
+.feature:hover {
+  transform: translateY(-4px);
+  border-color: #8b5cf6;
+  box-shadow: 0 0 20px #7c3aed30;
+}
+
+/* Animasi halus untuk navigasi */
+nav a {
+  transition: color 0.25s ease, text-shadow 0.25s ease;
+}
+
+nav a:hover {
+  color: #38bdf8;
+  text-shadow: 0 0 10px #38bdf866;
+}
+
+/* Efek fokus yang jelas untuk pengguna HP */
+.calculator select:focus,
+.calculator input:focus {
+  outline: 2px solid #8b5cf6;
+  outline-offset: 2px;
+  border-color: #38bdf8;
+}
+
+/* Kurangi gerakan jika perangkat memintanya */
+@media (prefers-reduced-motion: reduce) {
+  .service-icon {
+    animation: none;
+  }
+
+  .package,
+  .feature,
+  .button,
+  .order-button,
+  .calc-button,
+  .calc-wa {
+    transition: none;
+  }
+}
+
   </style>
 </head>
 
