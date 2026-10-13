@@ -904,6 +904,213 @@ nav a:hover {
     transition: none !important;
   }
 }
+    
+/* ===== XERZ NEON PARTICLES ===== */
+
+.hero-content {
+  isolation: isolate;
+}
+
+.hero-content::before {
+  content: "";
+  position: absolute;
+  inset: -70px -35px;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.55;
+
+  background-image:
+    radial-gradient(circle, #38bdf8 1.5px, transparent 2px),
+    radial-gradient(circle, #a855f7 1.5px, transparent 2px),
+    radial-gradient(circle, #c084fc 1px, transparent 2px),
+    radial-gradient(circle, #67e8f9 1px, transparent 2px);
+
+  background-size:
+    95px 110px,
+    130px 145px,
+    75px 90px,
+    155px 125px;
+
+  background-position:
+    0 0,
+    35px 55px,
+    20px 30px,
+    70px 15px;
+
+  animation: neonParticleDrift 14s linear infinite;
+}
+
+@keyframes neonParticleDrift {
+  from {
+    background-position:
+      0 0,
+      35px 55px,
+      20px 30px,
+      70px 15px;
+  }
+
+  to {
+    background-position:
+      95px -110px,
+      -95px -90px,
+      95px -60px,
+      -85px -110px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-content::before {
+    animation: none;
+  }
+}
+    
+/* ===== ANIMATED NEON BORDER ===== */
+
+.service-card,
+.calculator {
+  border: 1px solid transparent;
+
+  background:
+    linear-gradient(145deg, #171832, #0c1022 70%) padding-box,
+    linear-gradient(
+      120deg,
+      #38bdf8,
+      #8b5cf6,
+      #ec4899,
+      #a855f7,
+      #38bdf8
+    ) border-box;
+
+  background-size:
+    100% 100%,
+    300% 300%;
+
+  background-position:
+    center,
+    0% 50%;
+
+  animation:
+    neonBorderFlow 6s ease-in-out infinite;
+}
+
+@keyframes neonBorderFlow {
+  0% {
+    background-position: center, 0% 50%;
+  }
+
+  50% {
+    background-position: center, 100% 50%;
+  }
+
+  100% {
+    background-position: center, 0% 50%;
+  }
+}
+
+/* Cahaya tambahan pada kartu layanan */
+.service-card {
+  box-shadow:
+    0 0 20px #7c3aed22,
+    0 0 35px #38bdf811;
+}
+
+/* Cahaya tambahan pada kalkulator */
+.calculator {
+  box-shadow:
+    0 0 18px #8b5cf633,
+    0 0 32px #38bdf811;
+}
+
+/* Hormati pengaturan pengurangan gerakan */
+@media (prefers-reduced-motion: reduce) {
+  .service-card,
+  .calculator {
+    animation: none;
+  }
+}
+    
+/* ===== NEON SWEEP EFFECT ===== */
+
+.service-card {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.service-card::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -75%;
+  width: 45%;
+  height: 200%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #ffffff22,
+    #38bdf855,
+    transparent
+  );
+  transform: rotate(25deg);
+  pointer-events: none;
+  z-index: 0;
+  transition: left 0.7s ease;
+}
+
+.service-card:hover::after,
+.service-card:active::after {
+  left: 140%;
+}
+
+.service-card > * {
+  position: relative;
+  z-index: 1;
+}
+    
+/* ===== WHATSAPP NEON PULSE ===== */
+
+.order-button {
+  position: relative;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.order-button:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow:
+    0 0 12px #25d36688,
+    0 0 28px #25d36655;
+}
+
+.order-button:active {
+  transform: scale(0.97);
+}
+
+@keyframes whatsappPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 #25d36655;
+  }
+
+  50% {
+    box-shadow: 0 0 0 7px #25d36600;
+  }
+}
+
+/* Animasi khusus tombol WhatsApp */
+a.order-button[href*="wa.me"] {
+  animation: whatsappPulse 2s ease-out infinite;
+}
+
+a.order-button[href*="wa.me"]:hover {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  a.order-button[href*="wa.me"] {
+    animation: none;
+  }
+}
 
 
   </style>
