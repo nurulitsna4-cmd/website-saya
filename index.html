@@ -776,6 +776,40 @@ nav a:hover {
     transition: none;
   }
 }
+    
+/* ===== SCROLL REVEAL ANIMATION ===== */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s ease;
+}
+
+.reveal.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Efek bertahap untuk kartu keunggulan */
+.feature.reveal:nth-child(2) {
+  transition-delay: 0.12s;
+}
+
+.feature.reveal:nth-child(3) {
+  transition-delay: 0.24s;
+}
+
+/* Hormati pengaturan pengurangan gerakan */
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 
   </style>
 </head>
@@ -1158,6 +1192,40 @@ function hitungHargaBaru() {
     <p>Mobile Gaming Service</p>
     <p>© 2026 XERZ RANK. All rights reserved.</p>
   </footer>
+  
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const elemenAnimasi = document.querySelectorAll(
+    ".service-card, .calculator, .feature, .contact .section-title, .contact p, .contact .order-button"
+  );
+
+  elemenAnimasi.forEach(function (elemen) {
+    elemen.classList.add("reveal");
+  });
+
+  if ("IntersectionObserver" in window) {
+    const pengamat = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("show");
+          pengamat.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.12
+    });
+
+    elemenAnimasi.forEach(function (elemen) {
+      pengamat.observe(elemen);
+    });
+  } else {
+    elemenAnimasi.forEach(function (elemen) {
+      elemen.classList.add("show");
+    });
+  }
+});
+</script>
+
 
 </body>
 </html>
