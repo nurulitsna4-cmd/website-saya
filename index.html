@@ -809,6 +809,101 @@ nav a:hover {
     transition: none;
   }
 }
+    
+/* ===== XERZ RANK LOADING SCREEN ===== */
+
+#xerz-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  background:
+    radial-gradient(ellipse at center, #19113d 0%, #080817 70%);
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.45s ease, visibility 0.45s ease;
+}
+
+#xerz-loader.loader-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.loader-logo {
+  font-size: clamp(30px, 8vw, 48px);
+  font-weight: 900;
+  letter-spacing: 3px;
+  background: linear-gradient(90deg, #38bdf8, #a855f7, #ec4899);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 14px #8b5cf6aa);
+  animation: loaderPulse 1s ease-in-out infinite alternate;
+}
+
+.loader-subtitle {
+  color: #b9b5df;
+  font-size: 10px;
+  letter-spacing: 4px;
+}
+
+.loader-track {
+  width: 170px;
+  height: 4px;
+  overflow: hidden;
+  border-radius: 20px;
+  background: #282044;
+  box-shadow: 0 0 12px #7c3aed33;
+}
+
+.loader-progress {
+  width: 40%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #38bdf8, #a855f7, #ec4899);
+  box-shadow: 0 0 12px #a855f7;
+  animation: loaderProgress 1s ease-in-out infinite;
+}
+
+.loader-status {
+  color: #8581ae;
+  font-size: 11px;
+  letter-spacing: 2px;
+}
+
+@keyframes loaderPulse {
+  from {
+    transform: scale(1);
+    filter: drop-shadow(0 0 5px #38bdf8);
+  }
+  to {
+    transform: scale(1.04);
+    filter: drop-shadow(0 0 18px #a855f7);
+  }
+}
+
+@keyframes loaderProgress {
+  from {
+    transform: translateX(-110%);
+  }
+  to {
+    transform: translateX(260%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #xerz-loader,
+  .loader-logo,
+  .loader-progress {
+    animation: none !important;
+    transition: none !important;
+  }
+}
 
 
   </style>
@@ -922,6 +1017,17 @@ function hitungHargaBaru() {
 </script>
 
 <body>
+  
+<div id="xerz-loader" role="status" aria-label="Memuat XERZ RANK">
+  <div class="loader-logo">XERZ RANK</div>
+  <div class="loader-subtitle">MOBILE GAMING SERVICE</div>
+
+  <div class="loader-track">
+    <div class="loader-progress"></div>
+  </div>
+
+  <div class="loader-status">PREPARING YOUR EXPERIENCE...</div>
+</div>
 
   <header>
     <div>
@@ -1225,7 +1331,32 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 </script>
+  
+<script>
+(function () {
+  function tutupLoader() {
+    const loader = document.getElementById("xerz-loader");
 
+    if (!loader) return;
+
+    setTimeout(function () {
+      loader.classList.add("loader-hidden");
+
+      setTimeout(function () {
+        loader.remove();
+      }, 500);
+    }, 650);
+  }
+
+  if (document.readyState === "complete") {
+    tutupLoader();
+  } else {
+    window.addEventListener("load", tutupLoader, {
+      once: true
+    });
+  }
+})();
+</script>
 
 </body>
 </html>
