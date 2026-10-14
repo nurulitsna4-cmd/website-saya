@@ -1111,6 +1111,169 @@ a.order-button[href*="wa.me"]:hover {
     animation: none;
   }
 }
+    
+/* ===== XERZ RANK: CARA PEMESANAN ===== */
+
+.order-guide {
+  padding: 70px 20px;
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(
+      ellipse at top,
+      #312e8155,
+      transparent 65%
+    ),
+    #080b18;
+}
+
+.order-guide-inner {
+  max-width: 1050px;
+  margin: 0 auto;
+}
+
+.order-guide .section-title {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.order-guide-subtitle {
+  color: #aab3d1;
+  text-align: center;
+  line-height: 1.7;
+  max-width: 600px;
+  margin: 0 auto 35px;
+}
+
+.order-guide-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.order-guide-card {
+  position: relative;
+  padding: 26px 22px;
+  border: 1px solid #6366f155;
+  border-radius: 18px;
+  background: linear-gradient(
+    145deg,
+    #171832,
+    #0c1022 75%
+  );
+  box-shadow: 0 0 20px #7c3aed18;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.order-guide-card:hover {
+  transform: translateY(-6px);
+  border-color: #38bdf8;
+  box-shadow:
+    0 0 18px #38bdf833,
+    0 0 32px #8b5cf622;
+}
+
+.order-guide-number {
+  width: 46px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 800;
+  background: linear-gradient(
+    135deg,
+    #7c3aed,
+    #2563eb
+  );
+  box-shadow: 0 0 18px #7c3aed55;
+  margin-bottom: 20px;
+}
+
+.order-guide-card h3 {
+  color: #ffffff;
+  font-size: 18px;
+  margin: 0 0 12px;
+}
+
+.order-guide-card p {
+  color: #aab3d1;
+  font-size: 14px;
+  line-height: 1.8;
+  margin: 0;
+}
+
+.order-guide-note {
+  margin: 28px auto 0;
+  max-width: 760px;
+  padding: 17px 20px;
+  border: 1px solid #38bdf844;
+  border-radius: 14px;
+  background: #0c1830;
+  color: #cbd5e1;
+  font-size: 14px;
+  line-height: 1.8;
+  text-align: center;
+}
+
+.order-guide-note strong {
+  color: #38bdf8;
+}
+
+.order-guide-cta {
+  text-align: center;
+  margin-top: 25px;
+}
+
+.order-guide-cta a {
+  display: inline-block;
+  padding: 13px 25px;
+  border-radius: 12px;
+  background: linear-gradient(
+    135deg,
+    #7c3aed,
+    #2563eb
+  );
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 700;
+  box-shadow: 0 0 18px #7c3aed44;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.order-guide-cta a:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 25px #38bdf855;
+}
+
+@media (max-width: 760px) {
+  .order-guide {
+    padding: 50px 16px;
+  }
+
+  .order-guide-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .order-guide-card {
+    padding: 22px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .order-guide-card,
+  .order-guide-cta a {
+    transition: none;
+  }
+}
 
 
   </style>
@@ -1477,6 +1640,68 @@ function hitungHargaBaru() {
         </div>
       </div>
     </section>
+    
+<!-- ===== CARA PEMESANAN XERZ RANK ===== -->
+<section class="order-guide" id="cara-pemesanan">
+  <div class="order-guide-inner">
+
+    <h2 class="section-title">
+      CARA PEMESANAN
+    </h2>
+
+    <p class="order-guide-subtitle">
+      Mau menggunakan layanan XERZ RANK?
+      Ikuti langkah berikut sebelum melakukan pemesanan.
+    </p>
+
+    <div class="order-guide-grid">
+
+      <div class="order-guide-card">
+        <div class="order-guide-number">01</div>
+        <h3>Pilih Rank</h3>
+        <p>
+          Tentukan rank awal dan rank tujuan pada
+          kalkulator untuk melihat estimasi harga layanan.
+        </p>
+      </div>
+
+      <div class="order-guide-card">
+        <div class="order-guide-number">02</div>
+        <h3>Konfirmasi Pesanan</h3>
+        <p>
+          Hubungi kami melalui WhatsApp untuk menanyakan
+          ketersediaan layanan, total biaya, dan ketentuan
+          sebelum menyetujui pesanan.
+        </p>
+      </div>
+
+      <div class="order-guide-card">
+        <div class="order-guide-number">03</div>
+        <h3>Sepakati Detail</h3>
+        <p>
+          Pastikan harga, estimasi pengerjaan, metode layanan,
+          dan ketentuan keamanan sudah jelas sebelum transaksi.
+        </p>
+      </div>
+
+    </div>
+
+    <div class="order-guide-note">
+      <strong>Perhatian:</strong>
+      Harga pada kalkulator merupakan estimasi.
+      Pesanan hanya dilanjutkan setelah detail dan biaya
+      dikonfirmasi bersama.
+    </div>
+
+    <div class="order-guide-cta">
+      <a href="#kontak">
+        Lihat Kontak XERZ RANK →
+      </>
+    </div>
+
+  </div>
+</section>
+<!-- ===== AKHIR CARA PEMESANAN ===== -->
 
     <section class="contact" id="kontak">
       <h2 class="section-title">
